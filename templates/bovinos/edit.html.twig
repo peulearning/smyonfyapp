@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Bovinos{% endblock %}
+{% block title %}Editar Bovinos{% endblock %}
 
 {% block body %}
-    <h1>Edit Bovinos</h1>
+    <h1>Editar Bovinos</h1>
 
     {{ include('bovinos/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_bovinos_index') }}">back to list</a>
+    <a href="{{ path('app_bovinos_index') }}">Retorne a lista !</a>
 
     {{ include('bovinos/_delete_form.html.twig') }}
 {% endblock %}
