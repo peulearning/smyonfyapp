@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bovinos index{% endblock %}
+
+{% block body %}
+    <h1>Bovinos index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigo</th>
+                <th>Leite</th>
+                <th>Racao</th>
+                <th>Peso</th>
+                <th>Data_nascimento</th>
+                <th>Data_abatimento</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bovino in bovinos %}
+            <tr>
+                <td>{{ bovino.id }}</td>
+                <td>{{ bovino.codigo }}</td>
+                <td>{{ bovino.leite }}</td>
+                <td>{{ bovino.racao }}</td>
+                <td>{{ bovino.peso }}</td>
+                <td>{{ bovino.dataNascimento ? bovino.dataNascimento|date('Y-m-d') : '' }}</td>
+                <td>{{ bovino.dataAbatimento ? bovino.dataAbatimento|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_bovinos_show', {'id': bovino.id}) }}">show</a>
+                    <a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bovinos_new') }}">Create new</a>
+{% endblock %}

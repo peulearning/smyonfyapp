@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bovinos{% endblock %}
+
+{% block body %}
+    <h1>Bovinos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bovino.id }}</td>
+            </tr>
+            <tr>
+                <th>Codigo</th>
+                <td>{{ bovino.codigo }}</td>
+            </tr>
+            <tr>
+                <th>Leite</th>
+                <td>{{ bovino.leite }}</td>
+            </tr>
+            <tr>
+                <th>Racao</th>
+                <td>{{ bovino.racao }}</td>
+            </tr>
+            <tr>
+                <th>Peso</th>
+                <td>{{ bovino.peso }}</td>
+            </tr>
+            <tr>
+                <th>Data_nascimento</th>
+                <td>{{ bovino.dataNascimento ? bovino.dataNascimento|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Data_abatimento</th>
+                <td>{{ bovino.dataAbatimento ? bovino.dataAbatimento|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bovinos_index') }}">back to list</a>
+
+    <a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">edit</a>
+
+    {{ include('bovinos/_delete_form.html.twig') }}
+{% endblock %}
