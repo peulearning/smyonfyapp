@@ -56,6 +56,7 @@ class BovinosType extends AbstractType
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
                 'attr' => ['class' => 'js-datapicker', 'placeholder' => 'dia/mes/ano'],
+								'required' => false,
                 'constraints' => [
                     new Assert\LessThanOrEqual ([
                         'value' => 'today',
