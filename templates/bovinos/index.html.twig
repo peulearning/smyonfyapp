@@ -29,8 +29,8 @@
                 <td>{{ bovino.dataNascimento ? bovino.dataNascimento|date('Y-m-d') : '' }}</td>
                 <td>{{ bovino.dataAbatimento ? bovino.dataAbatimento|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_bovinos_show', {'id': bovino.id}) }}">show</a>
-                    <a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">edit</a>
+                   <button> <a href="{{ path('app_bovinos_show', {'id': bovino.id}) }}">Liste-o</a> </button>
+                    <button> <a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">Editar</a> </button>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_bovinos_new') }}">Create new</a>
+    <button><a href="{{ path('app_bovinos_new') }}">Cadastre seu gado !</a></button>
 {% endblock %}
