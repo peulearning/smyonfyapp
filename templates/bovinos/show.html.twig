@@ -38,9 +38,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_bovinos_index') }}">back to list</a>
+    <button type="button" class="btn btn-dark"><a href="{{ path('app_bovinos_index') }}">Volte para a lista !</a><button>
 
-    <a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">edit</a>
+    <button type="button" class="btn btn-warning"><a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">Edite o Gado !</a></button>
 
     {{ include('bovinos/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,0 +1,8 @@
+body {
+  background: url("https://www.dfranquias.com/assets/img/mascote-foguete.svg")
+    center 10rem no-repeat fixed;
+}
+
+.container {
+  opacity: 0.97;
+}
