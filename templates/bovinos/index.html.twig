@@ -3,7 +3,7 @@
 {% block title %}Bovinos Menu{% endblock %}
 
 {% block body %}
-    <h1>Menu</h1>
+    <h1>Bovinos Cadastrados</h1>
 
     <table class="table">
         <thead>
@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for bovino in bovinos %}
+        {% for bovino in data.bovinos %}
             <tr>
                 <td>{{ bovino.id }}</td>
                 <td>{{ bovino.codigo }}</td>
@@ -29,8 +29,8 @@
                 <td>{{ bovino.dataNascimento ? bovino.dataNascimento|date('Y-m-d') : '' }}</td>
                 <td>{{ bovino.dataAbatimento ? bovino.dataAbatimento|date('Y-m-d') : '' }}</td>
                 <td>
-                   <button type="button" class="btn btn-info"><a href="{{ path('app_bovinos_show', {'id': bovino.id}) }}">Liste-o</a> </button>
-                    <button type="button" class="btn btn-info"><a href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">Editar</a> </button>
+                   <a  type="button" class="btn btn-info" href="{{ path('app_bovinos_show', {'id': bovino.id}) }}">Liste-o</a>
+                    <a  type="button" class="btn btn-info" href="{{ path('app_bovinos_edit', {'id': bovino.id}) }}">Editar</a>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    <button type="button" class="btn btn-success"><a href="{{ path('app_bovinos_new') }}">Cadastre seu gado !</a></button>
+    <a type="button" class="btn btn-success" href="{{ path('app_bovinos_new') }}">Cadastre seu gado !</a>
 {% endblock %}

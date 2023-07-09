@@ -1,12 +1,12 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}New Bovinos{% endblock %}
 
 {% block body %}
-    <h1>Cadastre novos gados !</h1>
+    {% for messages in app.flashes('sucess') %}
+        <div class="alert alert-sucess">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {{ include('bovinos/_form.html.twig') }}
-
 
 
 {% endblock %}

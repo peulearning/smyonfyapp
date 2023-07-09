@@ -6,6 +6,7 @@ use App\Repository\BovinosRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: BovinosRepository::class)]
 class Bovinos
 {
@@ -25,6 +26,7 @@ class Bovinos
 
     #[ORM\Column]
     private ?float $peso = null;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $data_nascimento = null;
