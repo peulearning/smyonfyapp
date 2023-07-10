@@ -85,7 +85,6 @@ class BovinosController extends AbstractController
         return $this->redirectToRoute('app_bovinos_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
     #[Route('/abate', name: 'app_bovinos_abate')]
     public function abate(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
     {
