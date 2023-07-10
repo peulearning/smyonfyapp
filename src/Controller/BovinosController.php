@@ -87,24 +87,20 @@ class BovinosController extends AbstractController
 
 
     #[Route('/abate', name: 'app_bovinos_abate')]
-    public function reportAbate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator) : Response
+    public function abate(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        dd('Failed');
-        $paraAbate = $bovinosRepository->enviarAbate();
-        $resultParaAbate = array_column($paraAbate, 'conditions');
 
-        $data['tituloPage'] = 'Área de Abate';
-        $data['subTitulo'] = 'Enviar Bovinos aptos ao Abate';
-        $data['paraAbate'] = $resultParaAbate;
-        $query = $bovinosRepository->findTodosOrdenadosPeloAniversario();
+        $data['titulo'] = 'bovinos prontos para abate !';
+
+        $query = $bovinosRepository->findPossibilidadedeAbate();
 
         $data['bovinos'] = $paginator->paginate(
             $query,
-            $request->query->getInt('page',1),
+            $request->query->get('page', 1),
             7
         );
 
-        return $this->render('bovinos/abate.html.twig', ['data'=> $data]);
+        return $this->render('bovinos/abate.html.twig', $data);
     }
 
     #[Route('/abatidos', name: 'app_bovinos_abatidos')]
@@ -163,35 +159,6 @@ class BovinosController extends AbstractController
         ]);
     }
 
-   /*#[Route('/abate', name: 'app_bovinos_abate', methods: ['GET'])]
-    public function abate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator): Response
-    {
-        $data['titulo'] = 'bovinos prontos para abate';
-
-        $query = $bovinosRepository->findTodosOrdenadosPeloAniversario();
-
-        $data['bovinos'] = $paginator->paginate(
-            $query,
-            $request->query->get('page', 1),
-            7
-        );
-
-        return $this->render('bovinos/abate.html.twig', $data);
-
-    }
-
-    #[Route('/abater/{id}', name: 'app_bovinos_abater')]
-    public function abater($id, EntityManagerInterface $em, BovinosRepository $bovinosRepository): Response
-    {
-        $bovino = $bovinosRepository->find($id);
-        $bovino->setDataabatimento(new \DateTime('now'));
-
-        $em->persist($bovino);
-        $em->flush();
-        $this->addFlash('success', 'Gado mandado pro abate com sucesso!');
-
-        return $this->redirectToRoute('app_bovinos_abate');
-    }
-    */
 
 }
+

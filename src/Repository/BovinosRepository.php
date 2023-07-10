@@ -131,34 +131,8 @@ class BovinosRepository extends ServiceEntityRepository
         return (float) $query->getSingleScalarResult();
     }
 
-   /* public function enviarAbate(): array
-    {
-        $query = $this->createQueryBuilder('b')
-        ->select('b.id')
-        ->orderBy('b.data_nascimento', 'ASC')
-        ->addSelect('
-            (CASE
-                WHEN b.data_nascimento <= : minIdade OR
-                b.leite < :minLeite OR
-                (b.leite < :minLeite2 and (b.quantia_semanal / 7) > :minQuantiaDia) OR
-                (b.peso / 15) > :minPeso
-                THEN 1
-                ELSE 0
-            END) as conditions'
-        )
-            ->setParameter('minIdade', new DateTime('-5 year'))
-            ->setParameter('minLeite', 40)
-            ->setParameter('minLeite2', 70)
-            ->setParameter('minQuantiaDia', 50)
-            ->setParameter('minPeso', 18)
-            ->getQuery();
 
-            return $query->getArrayResult();
-    }
-
-    */
-
-    public function findPossibilidadeAbate()
+    public function findPossibilidadedeAbate()
     {
         return $this->createQueryBuilder('b')
             ->where('b.data_nascimento IS NOT NULL ')
