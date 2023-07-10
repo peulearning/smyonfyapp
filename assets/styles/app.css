@@ -1,6 +1,6 @@
 body {
-  background-image: url("https://www.dfranquias.com/assets/img/mascote-foguete.svg")
-    center 10rem no-repeat fixed;
+  background-image: url("/assets/img/dfranquias-foguete.jpeg") center 10rem
+    no-repeat fixed;
 }
 
 .container {
