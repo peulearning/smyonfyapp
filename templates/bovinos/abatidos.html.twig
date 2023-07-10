@@ -1,1 +1,41 @@
-{% extends 'base.html.twig' %}
+ {% extends 'base.html.twig' %}
+ {% block title %}Relatório dos Abatidos{% endblock %}
+ {% block body %}
+ <div class="container mt-3 shadow-lg p-3 mb-5 bg-white rounded">
+    <h1>{{ titulo }}</h1>
+    <table class="table">
+       <thead>
+           <tr>
+               <th scope="col">#</th>
+               <th scope="col">Código</th>
+               <th scope="col">Leite Produzido</th>
+               <th scope="col">Ração</th>
+               <th scope="col">Peso</th>
+               <th scope="col">Estado</th>
+               <th scope="col">Data de nascimento</th>
+               <th scope="col">Data de abatimento</th>
+            </tr>
+       </thead>
+       <tbody>
+      {% for bovino in bovinos %}
+      <tr>
+          <td>{{bovinos.id}}</td>
+           <td>{{bovinos.codigo}}</td>
+            <td>{{bovinos.leite|number_format(2, ',', '.')}} Litros</td>
+            <td>{{bovinos.racao|number_format(2, ',', '.')}} Kg</td>
+            <td>{{bovinos.peso|number_format(2, ',', '.')}} Kg ( Arrobas )</td>
+             <td>Abatido</td>
+             <td>{{bovinos.data_nascimento|date("d/m/Y")}}</td>
+                <td>{{bovinos.data_abatimento|date("d/m/Y")}}</td>
+            </tr>
+      {% endfor %}
+      </tbody>
+
+    </table>
+  {% if bovinos is empty %}
+       <div class="alert alert-primary" role="alert">Ainda não existem bovinos abatidos! </div>
+    {% endif %}
+    {{ knp_pagination_render bovinos) }}
+</div>
+
+{% endblock %}

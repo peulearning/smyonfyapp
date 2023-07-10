@@ -103,10 +103,23 @@ class BovinosController extends AbstractController
         return $this->render('bovinos/abate.html.twig', $data);
     }
 
+    #[Route('/abate/send/{id}', name: 'app_bovinos_abater')]
+    public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
+    {
+        $bovinos = $bovinosRepository->find($id);
+        $bovinos->setDataAbatimento(new DateTime());
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
+
+        return $this->redirectToRoute('app_bovinos_abate');
+    }
+
     #[Route('/abatidos', name: 'app_bovinos_abatidos')]
     public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        dd('Failed');
+
         $data['titulo'] = 'Bovinos abatidos';
 
         $query = $bovinosRepository->findByDataMaximaAbate();
@@ -118,19 +131,6 @@ class BovinosController extends AbstractController
         );
 
         return $this->render('bovinos/abatidos.html.twig', $data);
-    }
-
-    #[Route('/abate/send/{id}', name: 'app_bovinos_abatido')]
-    public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
-    {
-        $bovino = $bovinosRepository->find($id);
-        $bovino->setDataAbatimento(new DateTime());
-
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
-
-        return $this->redirectToRoute('app_bovinos_abate');
     }
 
     #[Route('/{id}', name: 'app_bovinos_show', methods: ['GET'])]
