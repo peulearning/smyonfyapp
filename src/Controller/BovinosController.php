@@ -75,6 +75,68 @@ class BovinosController extends AbstractController
             return $this->renderForm('bovinos/new.html.twig', $data);
     }
 
+    #[Route('/{id}', name: 'app_bovinos_delete', methods: ['POST'])]
+    public function delete(Request $request, Bovinos $bovino, BovinosRepository $bovinosRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$bovino->getId(), $request->request->get('_token'))) {
+            $bovinosRepository->remove($bovino, true);
+        }
+
+        return $this->redirectToRoute('app_bovinos_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/abate', name: 'app_bovinos_abate')]
+    public function reportAbate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator) : Response
+    {
+        dd('Failed');
+        $paraAbate = $bovinosRepository->enviarAbate();
+        $resultParaAbate = array_column($paraAbate, 'conditions');
+
+        $data['tituloPage'] = 'Área de Abate';
+        $data['subTitulo'] = 'Enviar Bovinos aptos ao Abate';
+        $data['paraAbate'] = $resultParaAbate;
+        $query = $bovinosRepository->findTodosOrdenadosPeloAniversario();
+
+        $data['bovinos'] = $paginator->paginate(
+            $query,
+            $request->query->getInt('page',1),
+            7
+        );
+
+        return $this->render('bovinos/abate.html.twig', ['data'=> $data]);
+    }
+
+    #[Route('/abatidos', name: 'app_bovinos_abatidos')]
+    public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
+    {
+        dd('Failed');
+        $data['titulo'] = 'Bovinos abatidos';
+
+        $query = $bovinosRepository->findByDataMaximaAbate();
+
+        $data['bovinos'] = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            7
+        );
+
+        return $this->render('bovinos/abatidos.html.twig', $data);
+    }
+
+    #[Route('/abate/send/{id}', name: 'app_bovinos_abatido')]
+    public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
+    {
+        $bovino = $bovinosRepository->find($id);
+        $bovino->setDataAbatimento(new DateTime());
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
+
+        return $this->redirectToRoute('app_bovinos_abate');
+    }
+
     #[Route('/{id}', name: 'app_bovinos_show', methods: ['GET'])]
     public function show(Bovinos $bovino): Response
     {
@@ -101,70 +163,7 @@ class BovinosController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_bovinos_delete', methods: ['POST'])]
-    public function delete(Request $request, Bovinos $bovino, BovinosRepository $bovinosRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$bovino->getId(), $request->request->get('_token'))) {
-            $bovinosRepository->remove($bovino, true);
-        }
-
-        return $this->redirectToRoute('app_bovinos_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-
-    #[Route('/abate', name: 'app_bovinos_abate')]
-    public function reportAbate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator) : Response
-    {
-
-        $paraAbate = $bovinosRepository->enviarAbate();
-        $resultParaAbate = array_column($paraAbate, 'conditions');
-
-        $data['tituloPage'] = 'Área de Abate';
-        $data['subTitulo'] = 'Enviar Bovinos aptos ao Abate';
-        $data['paraAbate'] = $resultParaAbate;
-        $query = $bovinosRepository->findTodosOrdenadosPeloAniversario();
-
-        $data['bovinos'] = $paginator->paginate(
-            $query,
-            $request->query->getInt('page',1),
-            7
-        );
-
-        return $this->render('bovinos/abate.html.twig', ['data'=> $data]);
-    }
-
-    #[Route('/abate/send/{id}', name: 'app_bovinos_abatido')]
-    public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
-    {
-        $bovino = $bovinosRepository->find($id);
-        $bovino->setDataAbatimento(new DateTime());
-
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
-
-        return $this->redirectToRoute('app_bovinos_abate');
-    }
-
-#[Route('/abatidos', name: 'app_bovinos_abatidos')]
-    public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
-    {
-
-        $data['titulo'] = 'Bovinos abatidos';
-
-        $query = $bovinosRepository->findByDataMaximaAbate();
-
-        $data['bovinos'] = $paginator->paginate(
-            $query,
-            $request->query->get('page', 1),
-            7
-        );
-
-        return $this->render('bovinos/abatidos.html.twig', $data);
-    }
-
-
-  /*  #[Route('/abate', name: 'app_bovinos_abate', methods: ['GET'])]
+   /*#[Route('/abate', name: 'app_bovinos_abate', methods: ['GET'])]
     public function abate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator): Response
     {
         $data['titulo'] = 'bovinos prontos para abate';
