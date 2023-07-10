@@ -112,7 +112,7 @@ class BovinosController extends AbstractController
     }
 
 
-    /*#[Route('/abate', name: 'app_bovinos_abate')]
+    #[Route('/abate', name: 'app_bovinos_abate')]
     public function reportAbate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator) : Response
     {
 
@@ -133,8 +133,8 @@ class BovinosController extends AbstractController
         return $this->render('bovinos/abate.html.twig', ['data'=> $data]);
     }
 
-    #[Route('/bovinos/abate/send/{id}', name: 'app_bovinos_abatido')]
-    public function sendSlaughter($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/abate/send/{id}', name: 'app_bovinos_abatido')]
+    public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
     {
         $bovino = $bovinosRepository->find($id);
         $bovino->setDataAbatimento(new DateTime());
@@ -145,16 +145,31 @@ class BovinosController extends AbstractController
 
         return $this->redirectToRoute('app_bovinos_abate');
     }
-    */
 
-
-    #[Route('/abate', name: 'app_bovinos_abate')]
-    public function abate(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
+#[Route('/abatidos', name: 'app_bovinos_abatidos')]
+    public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
     {
 
+        $data['titulo'] = 'Bovinos abatidos';
+
+        $query = $bovinosRepository->findByDataMaximaAbate();
+
+        $data['bovinos'] = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            7
+        );
+
+        return $this->render('bovinos/abatidos.html.twig', $data);
+    }
+
+
+  /*  #[Route('/abate', name: 'app_bovinos_abate', methods: ['GET'])]
+    public function abate(Request $request, BovinosRepository $bovinosRepository, PaginatorInterface $paginator): Response
+    {
         $data['titulo'] = 'bovinos prontos para abate';
 
-        $query = $bovinosRepository->findPossibiliaDeAbate();
+        $query = $bovinosRepository->findTodosOrdenadosPeloAniversario();
 
         $data['bovinos'] = $paginator->paginate(
             $query,
@@ -163,6 +178,7 @@ class BovinosController extends AbstractController
         );
 
         return $this->render('bovinos/abate.html.twig', $data);
+
     }
 
     #[Route('/abater/{id}', name: 'app_bovinos_abater')]
@@ -177,21 +193,6 @@ class BovinosController extends AbstractController
 
         return $this->redirectToRoute('app_bovinos_abate');
     }
+    */
 
-    #[Route('/abatidos', name: 'app_bovinos_abatidos')]
-    public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
-    {
-
-        $data['titulo'] = 'Bovinos abatidos';
-
-        $query = $bovinosRepository->findByDataMaximaAbate();
-
-        $data['gados'] = $paginator->paginate(
-            $query,
-            $request->query->get('page', 1),
-            7
-        );
-
-        return $this->render('bovinos/abatidos.html.twig', $data);
-    }
 }
