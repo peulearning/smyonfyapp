@@ -17,7 +17,7 @@
             </tr>
        </thead>
        <tbody>
-      {% for bovino in bovinos %}
+      {% for bovinos in bovinos %}
       <tr>
           <td>{{bovinos.id}}</td>
            <td>{{bovinos.codigo}}</td>
@@ -35,7 +35,7 @@
   {% if bovinos is empty %}
        <div class="alert alert-primary" role="alert">Ainda não existem bovinos abatidos! </div>
     {% endif %}
-    {{ knp_pagination_render bovinos) }}
+    {{ knp_pagination_render bovinos }}
 </div>
 
 {% endblock %}

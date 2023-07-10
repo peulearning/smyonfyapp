@@ -35,8 +35,19 @@
       {% endif %}
     {{ knp_pagination_render(bovinos) }}
   </div>
-     <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  {% endblock %}
+  {% block javascripts %}
+        <script>
+            $(document).ready(function(){
+            $(document).on('click', '#btn-abater', function (e) {
+                const a = document.getElementById('abater');
+                const id =  $(this).data('id');
+                a.setAttribute("href", "/bovinos/abatidos/" + id);
+            });
+            });
+       </script>
+       <!-- Modal -->
+       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -48,18 +59,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <a id="abater" class="btn btn-danger">Abater</a>
+                <a id="abater" type="button" class="btn btn-danger">Abater</a>
             </div>
         </div>
     </div>
 </div>
-  {% endblock %}
-  {% block javascripts %}
-        <script>
-            $(document).on('click', '#btn-abater', function (e) {
-                a = document.getElementById('abater');
-                const id =  $(this).data('id');
-                a.setAttribute("href", "/bovino/abatidos/" + id);
-            });
-       </script>
 {% endblock %}
