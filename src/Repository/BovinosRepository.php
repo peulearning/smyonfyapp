@@ -131,7 +131,7 @@ class BovinosRepository extends ServiceEntityRepository
         return (float) $query->getSingleScalarResult();
     }
 
-    public function enviarAbate(): array
+   /* public function enviarAbate(): array
     {
         $query = $this->createQueryBuilder('b')
         ->select('b.id')
@@ -154,6 +154,19 @@ class BovinosRepository extends ServiceEntityRepository
             ->getQuery();
 
             return $query->getArrayResult();
+    }
+
+    */
+
+    public function findPossibilidadeAbate()
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.data_nascimento IS NOT NULL ')
+            ->andWhere('b.leite < 40 or b.data_nascimento <= :data or (b.peso/15) > 18 or (b.leite < 70 and b.racao > (50/7))')
+            ->setParameter('data', date('Y-m-d', strtotime('-5 year')))
+            ->orderBy('b.id')
+            ->getQuery()
+            ->getResult();
     }
 
     // Abatidos
