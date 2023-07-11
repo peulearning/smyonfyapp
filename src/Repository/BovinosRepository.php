@@ -136,6 +136,7 @@ class BovinosRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
             ->where('b.data_nascimento IS NOT NULL ')
+            ->andWhere('b.data_abatimento IS  NULL ')
             ->andWhere('b.leite < 40 or b.data_nascimento <= :data or (b.peso/15) > 18 or (b.leite < 70 and b.racao > (50/7))')
             ->setParameter('data', date('Y-m-d', strtotime('-5 year')))
             ->orderBy('b.id')
@@ -154,24 +155,14 @@ class BovinosRepository extends ServiceEntityRepository
         return (int) $query->getSingleScalarResult();
     }
 
-    public function findByDataMaximaAbate()
+    public function findByDataAbate()
     {
         $query = $this->createQueryBuilder('b')
-            ->select('MAX(b.data_nascimento)')
             ->where('b.data_abatimento IS NOT NULL')
+            ->orderBy('b.data_abatimento', 'ASC')
             ->getQuery();
 
-        return $query->getSingleScalarResult();
-    }
-
-    public function findByDataMininaAbate()
-    {
-        $query = $this->createQueryBuilder('b')
-            ->select('MIN(b.data_nascimento)')
-            ->where('b.data_abatimento IS NOT NULL')
-            ->getQuery();
-
-        return $query->getSingleScalarResult();
+        return $query->getResult();
     }
 
     public function sumLeiteBovinosAbatidos(): float

@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Repository\BovinosRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BovinosRepository::class)]
+#[UniqueEntity('codigo', message:"Insira outro valor no sistema !")]
 class Bovinos
 {
     #[ORM\Id]

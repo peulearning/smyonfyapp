@@ -50,22 +50,7 @@ class BovinosType extends AbstractType
                 	])
                 ]
             ])
-            ->add('data_abatimento', DateType::class, [
-                'label' => 'Data de Abatimento',
-                'html5'=> false,
-                'format' => 'dd/MM/yyyy',
-                'widget' => 'single_text',
-                'attr' => ['class' => 'js-datapicker', 'placeholder' => 'dia/mes/ano'],
-								'required' => false,
-                'constraints' => [
-                    new Assert\LessThanOrEqual ([
-                        'value' => 'today',
-                        'message' => 'Data Inválida'
-                    ])
-                ]
 
-
-			])
 			->add('Salvar', SubmitType::class);
 	}
 

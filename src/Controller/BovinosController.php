@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\Form\Extensions\Core\Type\IntegerType;
 
-#[Route('/bovinos')]
+#
 class BovinosController extends AbstractController
 {
     #[Route('/', name: 'app_bovinos_index', methods: ['GET'])]
@@ -44,8 +44,7 @@ class BovinosController extends AbstractController
       $report['bovinos_abatidos'] = $bovinosRepository->countBovinosAbatidos();
       $report['leite_abatidos'] = $bovinosRepository->sumLeiteBovinosAbatidos();
       $report['racao_abatidos'] = $bovinosRepository->sumRacaoBovinosAbatidos();
-      $report['dataMin_abatidos'] = $bovinosRepository->findByDataMininaAbate();
-      $report['dataMax_abatidos'] = $bovinosRepository->findByDataMaximaAbate();
+      $report['dataDos_abatidos'] = $bovinosRepository->findByDataAbate();
 
       return $this->render('/bovinos/index.html.twig', ['data' => $data, 'report' => $report]);
 
@@ -102,26 +101,31 @@ class BovinosController extends AbstractController
         return $this->render('bovinos/abate.html.twig', $data);
     }
 
-    #[Route('/abate/send/{id}', name: 'app_bovinos_abater')]
+    #[Route('/abater/{id}', name: 'app_bovinos_abater', methods:['GET','POST'])]
     public function abater($id, BovinosRepository $bovinosRepository, EntityManagerInterface $entityManager): Response
     {
-        $bovinos = $bovinosRepository->find($id);
-        $bovinos->setDataAbatimento(new DateTime());
 
+        $bovino = $bovinosRepository->find($id);
+
+        if (!$bovino) {
+            throw $this->createNotFoundException('Bovino não encontrado');
+        }
+
+        $bovino->setDataAbatimento(new \DateTime());
         $entityManager->flush();
 
-        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
+        $this->addFlash('success', 'Animal enviado para abate com sucesso!');
 
-        return $this->redirectToRoute('app_bovinos_abate');
+        return $this->redirectToRoute('app_bovinos_index');
     }
 
     #[Route('/abatidos', name: 'app_bovinos_abatidos')]
     public function abatidos(BovinosRepository $bovinosRepository, Request $request, PaginatorInterface $paginator): Response
     {
 
-        $data['titulo'] = 'Bovinos abatidos';
+        $data['titulo'] = 'bovinos abatidos';
 
-        $query = $bovinosRepository->findByDataMaximaAbate();
+        $query = $bovinosRepository->findByDataAbate();
 
         $data['bovinos'] = $paginator->paginate(
             $query,

@@ -2,7 +2,7 @@
  {% block title %}Relatório dos Abatidos{% endblock %}
  {% block body %}
  <div class="container mt-3 shadow-lg p-3 mb-5 bg-white rounded">
-    <h1>{{ titulo }}</h1>
+    <h1>Bovinos Abatidos</h1>
     <table class="table">
        <thead>
            <tr>
@@ -11,9 +11,6 @@
                <th scope="col">Leite Produzido</th>
                <th scope="col">Ração</th>
                <th scope="col">Peso</th>
-               <th scope="col">Estado</th>
-               <th scope="col">Data de nascimento</th>
-               <th scope="col">Data de abatimento</th>
             </tr>
        </thead>
        <tbody>
@@ -24,9 +21,11 @@
             <td>{{bovinos.leite|number_format(2, ',', '.')}} Litros</td>
             <td>{{bovinos.racao|number_format(2, ',', '.')}} Kg</td>
             <td>{{bovinos.peso|number_format(2, ',', '.')}} Kg ( Arrobas )</td>
-             <td>Abatido</td>
-             <td>{{bovinos.data_nascimento|date("d/m/Y")}}</td>
-                <td>{{bovinos.data_abatimento|date("d/m/Y")}}</td>
+                {#} {% if bovinos.data_abatimento != null %}
+                <td>Abatido</td>
+                {% endif %}
+          {#    <td>{{bovinoss.data_nascimento|date("Y-m-d")}}</td> #}
+                {#<td>{{bovinoss.data_abatimento|date("Y-m-d")}}</td>#}
             </tr>
       {% endfor %}
       </tbody>
@@ -35,7 +34,7 @@
   {% if bovinos is empty %}
        <div class="alert alert-primary" role="alert">Ainda não existem bovinos abatidos! </div>
     {% endif %}
-    {{ knp_pagination_render bovinos }}
+    {{ knp_pagination_render (bovinos) }}
 </div>
 
 {% endblock %}
